@@ -6,9 +6,12 @@ readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
     "elasticsearch>=9.3.0",
+    "ipywidgets>=8.1.8",
+    "minsearch>=0.0.10",
     "notebook==7.1.2",
     "openai>=2.30.0",
     "pandas>=3.0.2",
+    "python-docx>=1.2.0",
     "scikit-learn>=1.8.0",
     "tdqm>=0.0.1",
 ]
