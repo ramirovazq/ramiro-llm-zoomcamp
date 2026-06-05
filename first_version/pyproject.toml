@@ -12,6 +12,7 @@ dependencies = [
     "openai>=2.30.0",
     "pandas>=3.0.2",
     "python-docx>=1.2.0",
+    "qdrant-client[fastembed]>=1.18.0",
     "scikit-learn>=1.8.0",
     "tdqm>=0.0.1",
 ]
