@@ -1,3 +1,5 @@
+from dataclasses import dataclass
+
 INSTRUCTIONS = '''
 Your task is to answer questions from the course participants
 based on the provided context.
@@ -13,6 +15,12 @@ QUESTION: {question}
 CONTEXT:
 {context}
 '''.strip()
+
+
+@dataclass
+class RagResult:
+    answer: str
+    usage: object
 
 
 class RAGBase:
@@ -32,6 +40,7 @@ class RAGBase:
         self.course = course
         self.prompt_template = prompt_template
         self.model = model
+        print(f"RAGBase initialized with model: {self.model}, course: {self.course}")
 
     def search(self, query, num_results=5):
         boost_dict = {'question': 3.0, 'section': 0.5}
@@ -71,15 +80,15 @@ class RAGBase:
             model=self.model,
             input=input_messages
         )
-        print(".................TOKENS....")
-        usage = response.usage
-        print(f"input_tokens: {usage.input_tokens}",
-              f"output_tokens: {usage.output_tokens}", 
-              f"total_tokens: {usage.input_tokens + usage.output_tokens}")
-        return response.output_text
+        return response
+        
 
     def rag(self, query):
         search_results = self.search(query)
         prompt = self.build_prompt(query, search_results)
-        answer = self.llm(prompt)
-        return answer
+        response = self.llm(prompt)
+
+        return RagResult(
+            answer=response.output_text,
+            usage=response.usage
+        )
