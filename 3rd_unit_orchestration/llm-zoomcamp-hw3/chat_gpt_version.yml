@@ -1,0 +1,49 @@
+id: nyc_taxi_csv_to_bigquery
+namespace: zoomcamp
+
+inputs:
+  - id: taxi
+    type: SELECT
+    displayName: Taxi type
+    values:
+      - yellow
+      - green
+    defaults: yellow
+
+  - id: year
+    type: STRING
+    defaults: "2024"
+
+  - id: month
+    type: STRING
+    defaults: "01"
+
+variables:
+  file: "{{ inputs.taxi }}_tripdata_{{ inputs.year }}-{{ inputs.month }}.csv"
+  gcs_bucket: "YOUR_GCS_BUCKET"
+  bq_dataset: "nyc_taxi"
+  bq_table: "{{ inputs.taxi }}_tripdata"
+
+tasks:
+  - id: download_csv
+    type: io.kestra.plugin.core.http.Download
+    uri: "https://github.com/DataTalksClub/nyc-tlc-data/releases/download/{{ inputs.taxi }}/{{ render(vars.file) }}"
+
+  - id: upload_to_gcs
+    type: io.kestra.plugin.gcp.gcs.Upload
+    from: "{{ outputs.download_csv.uri }}"
+    bucket: "{{ vars.gcs_bucket }}"
+    name: "nyc-taxi/{{ render(vars.file) }}"
+    serviceAccount: "{{ secret('GCP_SERVICE_ACCOUNT') }}"
+
+  - id: load_to_bigquery
+    type: io.kestra.plugin.gcp.bigquery.Load
+    from:
+      - "gs://{{ vars.gcs_bucket }}/nyc-taxi/{{ render(vars.file) }}"
+    destinationTable: "{{ secret('GCP_PROJECT_ID') }}.{{ vars.bq_dataset }}.{{ vars.bq_table }}"
+    format: CSV
+    fieldDelimiter: ","
+    header: true
+    autodetect: true
+    writeDisposition: WRITE_APPEND
+    serviceAccount: "{{ secret('GCP_SERVICE_ACCOUNT') }}"
