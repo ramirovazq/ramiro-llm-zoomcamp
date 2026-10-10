@@ -1,0 +1,18 @@
+[project]
+name = "4th-unit-llm-evaluation"
+version = "0.1.0"
+description = "Proyecto anidado independiente"
+dependencies = [
+    "jupyter>=1.1.1",
+    "minsearch>=0.2.0",
+    "openai>=3.22.1",
+    "pandas>=3.0.6",
+    "pydantic>=2.13.5",
+    "python-dotenv>=1.2.3",
+    "requests>=2.34.2",
+    "tqdm>=4.70.1",
+]
+
+[tool.uv]
+# Esto rompe de forma oficial la relación con cualquier espacio de trabajo superior
+workspace = { }

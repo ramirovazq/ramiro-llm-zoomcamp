@@ -28,3 +28,8 @@ url = "https://pypi.org/simple"
 [[tool.uv.index]]
 name = "pytorch-cpu"
 url = "https://download.pytorch.org/whl/cpu"
+
+[tool.uv.workspace]
+members = [
+    "4th_unit_llm_evaluation",
+]

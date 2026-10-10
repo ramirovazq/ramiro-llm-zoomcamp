@@ -1,4 +1,4 @@
-NSTRUCTIONS = '''
+INSTRUCTIONS = '''
 Your task is to answer questions from the course participants
 based on the provided context.
 
