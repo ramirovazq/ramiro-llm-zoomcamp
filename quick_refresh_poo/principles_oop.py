@@ -39,25 +39,88 @@ print(account.balance)
 
 # abstraction # reduce complexity by hiding implementation details
 
-class EmailService:
+# class EmailService:
 
-    def _connect(self):
-        print("Connecting to email server...")
+#     def _connect(self):
+#         print("Connecting to email server...")
 
-    def _authenticate(self):
-        # simulate authentication process
-        print("Authenticating...")
+#     def _authenticate(self):
+#         # simulate authentication process
+#         print("Authenticating...")
 
-    def send_email(self):
-        self._connect()
-        self._authenticate()
-        print(f"Sending email ....")
-        self._disconnect()
+#     def send_email(self):
+#         self._connect()
+#         self._authenticate()
+#         print(f"Sending email ....")
+#         self._disconnect()
 
-    def _disconnect(self):
-        print("Disconnecting from email server...")
+#     def _disconnect(self):
+#         print("Disconnecting from email server...")
 
-e = EmailService()
-e.send_email()
+# e = EmailService()
+# e.send_email()
 
-# 
+# Inheritance 
+# Is a fundamental concept on object-oriented programming (OOP) that involves
+# creating new classes (subclasses or derived classes) based on existing classes
+# (superclass or base class)
+
+# class Vehicle:
+#     def __init__(self, brand, model, year):
+#         self.brand = brand
+#         self.model = model
+#         self.year = year
+
+#     def start(self):
+#         print("vehicle is starting ...")
+
+#     def stop(self):
+#         print("vehicle is stopping ...")
+
+# class Car(Vehicle):
+#     def __init__(self, brand, model, year, number_of_doors, number_of_wheels):
+#         super().__init__(brand, model, year)
+#         self.number_of_doors = number_of_doors
+#         self.number_of_wheels = number_of_wheels
+
+# class Bike(Vehicle):
+#     def __init__(self, brand, model, year, number_of_wheels):
+#         super().__init__(brand, model, year)
+#         self.number_of_wheels = number_of_wheels
+
+# car = Car("Ford", "Mustang", 2023, 4, 4)
+# bike = Bike("Yamaha", "MT-07", 2023, 2)
+
+# print(car.__dict__)
+# print(bike.__dict__)
+# car.start()
+# bike.start()
+# car.stop()
+# bike.stop() 
+
+# Polymorphism: many forms "having multiple forms"
+
+
+# Coupling
+class EmailSender:
+    def send(self, message):
+        print(f"Sending email: {message}")
+
+class Order:
+    def create(self):
+        # perform order creation logic, e.g. validate order details, check 
+        # product stock, save to database
+        email = EmailSender()
+        email.send("Hi your order was places successfully")
+
+order = Order()
+order.create()
+
+# # Coupling - refactored solution
+
+# from abc import ABC, abstractmethod
+
+# class NotificationService(ABC):
+#     @abstractmethod
+#     def send_notification(self, message: str):
+#         pass
