@@ -102,25 +102,52 @@ print(account.balance)
 
 
 # Coupling
-class EmailSender:
-    def send(self, message):
-        print(f"Sending email: {message}")
+# class EmailSender:
+#     def send(self, message):
+#         print(f"Sending email: {message}")
 
-class Order:
-    def create(self):
-        # perform order creation logic, e.g. validate order details, check 
-        # product stock, save to database
-        email = EmailSender()
-        email.send("Hi your order was places successfully")
+# class Order:
+#     def create(self):
+#         # perform order creation logic, e.g. validate order details, check 
+#         # product stock, save to database
+#         email = EmailSender()
+#         email.send("Hi your order was places successfully")
 
-order = Order()
-order.create()
+# order = Order()
+# order.create()
 
 # # Coupling - refactored solution
 
-# from abc import ABC, abstractmethod
+from abc import ABC, abstractmethod
 
-# class NotificationService(ABC):
-#     @abstractmethod
-#     def send_notification(self, message: str):
-#         pass
+class NotificationService(ABC):
+    @abstractmethod
+    def send_notification(self, message: str):
+        pass
+
+class EmailService(NotificationService):
+    def send_notification(self, message):
+        print(f"Send email: {message}")
+
+class MobileService(NotificationService):
+    def send_notification(self, message):
+        print(f"Send text message: {message}")
+
+class Order:
+    def __init__(self, notification_service: NotificationService):
+        self.notification_service = notification_service
+
+    def create(self):
+        # perform order creation logic, e.g. validate order details, check 
+        # product stock, save to database
+
+        # Instead of
+        # email = EmailSender()
+        # email.send("Hi your order was places successfully")
+        self.notification_service.send_notification("Hi your order was places successfully")
+
+order1 = Order(EmailService())
+order1.create()
+
+order2 = Order(MobileService())
+order2.create()
