@@ -151,3 +151,53 @@ order1.create()
 
 order2 = Order(MobileService())
 order2.create()
+
+# composition
+# involves creating complex objects by combining simpler objects or components
+# its more about has a relationship (inheritance is "is a" relationship)
+
+class Engine:
+    def start(self):
+        print("Engine is starting ...")
+class Wheels:
+    def rotate(self):
+        print("Wheels are rotating ...")
+class Chassis:
+    def support(self):
+        print("Chassis is supporting the vehicle ...")
+class Seats:
+    def adjust(self):
+        print("Seats are being adjusted ...")
+
+class Car:
+    def __init__(self):
+        self._engine = Engine()
+        self._wheels = Wheels()
+        self._chassis = Chassis()
+        self._seats = Seats()
+
+    def start(self):
+        self._engine.start()
+        self._wheels.rotate()
+        self._chassis.support()
+        self._seats.adjust()
+        print("Car has started.")
+car = Car()
+car.start()
+
+# composition vs inheritance
+
+# In composition, a class is composed of one or more objects from other classes, 
+# establishing a "has-a" relationship. In inheritance, a class derives from another class, 
+# establishing an "is-a" relationship. Composition is generally preferred for flexibility and 
+# maintainability, as it allows changing behavior at runtime by swapping components.
+
+# When to use Composition
+# - When you need more flexibility in constructing objects by assembling smaller, reusable components.
+# - When you want to avoid the limitations of inheritance, such as tight coupling and the 
+# fragile base class problem.
+
+# When to Use Inheritance
+# - When there is a clear "is-a" relationship between classes, and 
+# subclass objects can be treated as instances of their superclass
+# - When you want to promote code reuse by inheriting properties and behaviors from existing classes.
